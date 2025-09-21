@@ -6,10 +6,10 @@ A group project aiming to use U.S. County-level census data and machine learning
 
 ## Team Members
 
-- Khoa Cao
-- John Kim
-- Laurel Purcell
-- Patty 
+- Khoa Cao (kcao@bu.edu)
+- John Kim (jjk29@bu.edu)
+- Laurel Purcell (lgp116@bu.edu)
+- Patty Huang (pattyh@bu.edu)
 
 ## Objectives
 
