@@ -46,7 +46,7 @@ The project's dataset will be compiled from various public sources at the county
 
 We will likely use a combination of the following methods to evaluate our models:
 
-- Train-test split
+- Train-test split (10% of data reserved for testing)
 - Cross-validation
 - Evaluation metrics (e.g., Root MSE, MAE, R-squared for regression tasks)
 
