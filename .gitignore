@@ -212,5 +212,6 @@ data/**/*.tsv
 data/**/*.parquet
 data/**/*.xlsx
 data/**/.DS_Store
-
+data/**/*.tar
+data/**/*.json
 **/.DS_Store
