@@ -20,20 +20,21 @@ This project explores how local factors influence small business success using d
 - Build predictive models to estimate business outcomes such as:
     - Average rating
     - Review volume
-    - Business longevity or closure likelihood
+    - Business closure likelihood
 
 ## Data Sources
 
 The dataset includes millions of records across multiple tables from the Yelp dataset (https://business.yelp.com/data/resources/open-dataset/) such as:
-- business.json – Business metadata (location, category, attributes)
+- business.json – Business metadata (location, category, attributes, average rating)
 - review.json – User reviews and star ratings
 - user.json – User information and engagement metrics
 - checkin.json – Customer check-in patterns
 - tip.json – User tips and recommendations
 
 We will also use the following supplemental data sources:
-- Bureau of Labor Statistics (https://www.bls.gov/lau/tables.htm#cntyaa) - County-wide labor force and unemployment rate for 2023
-- BEA (https://apps.bea.gov/regional/downloadzip.htm) - County-wide GDP and/or personal income for 2023
+- Bureau of Labor Statistics (https://www.bls.gov/lau/tables.htm#cntyaa) - Per-county labor force and unemployment rate
+- BEA (https://apps.bea.gov/regional/downloadzip.htm) - Per-county GDP and/or personal income
+- County shapefiles from US Census (https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_2018_us_county_5m.zip) - To map businesses to counties
 
 ## Data Visualization
 
@@ -41,7 +42,6 @@ To uncover insights into business performance, we will employ:
 
 - Exploratory Data Analysis (EDA):
     - Distribution of ratings, reviews, and categories
-    - Temporal trends in business openings and closures
     - Correlation between features such as location, hours, and ratings
 - Visualizations:
     - Bar charts comparing top-performing categories and cities
