@@ -32,8 +32,8 @@ The dataset includes millions of records across multiple tables from the Yelp da
 - tip.json – User tips and recommendations
 
 We will also use the following supplemental data sources:
-- Bureau of Labor Statistics (https://www.bls.gov/lau/tables.htm#cntyaa) - County-wide labor force and unemployment rate
-- BEA (https://apps.bea.gov/regional/downloadzip.htm) - County-wide GDP and/or personal income
+- Bureau of Labor Statistics (https://www.bls.gov/lau/tables.htm#cntyaa) - County-wide labor force and unemployment rate for 2023
+- BEA (https://apps.bea.gov/regional/downloadzip.htm) - County-wide GDP and/or personal income for 2023
 
 ## Data Visualization
 
