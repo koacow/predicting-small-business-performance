@@ -207,6 +207,8 @@ marimo/_lsp/
 __marimo__/
 
 # Data files
-*.csv
-*.tsv
-*.xslx
+data/**/*.csv
+data/**/*.tsv
+data/**/*.parquet
+data/**/*.xlsx
+data/**/.DS_Store
