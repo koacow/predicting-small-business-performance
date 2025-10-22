@@ -1,8 +1,8 @@
-# Predicting Labor Market Trends
+# Small Business Success Factors
 
 ## Overview
 
-This project explores how local factors influence small business success using data from the Yelp Open Dataset. By analyzing business attributes, restuarant hours, ratings, and location data, we aim to idenitfy key predictors of business performance and survival across different U.S. regions. 
+This project explores how local factors influence small business success using data from the Yelp Open Dataset. By analyzing business attributes, restaurant hours, ratings, and location data, we aim to identify key predictors of business performance and survival across different U.S. regions. 
 
 ## Team Members
 
@@ -61,4 +61,5 @@ To ensure robust and fair model performance, we will apply:
         - Regression: MAE, MSE, R²
         - Classification: Accuracy, Precision, Recall, F1 Score, ROC-AUC
         - Clustering: Silhouette Score
+
 
