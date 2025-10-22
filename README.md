@@ -2,7 +2,7 @@
 
 ## Overview
 
-A group project aiming to use U.S. County-level census data and machine learning techniques to predict labor market trends such as unemployment rates, job growth, and vulnerable-worker disparities.
+This project explores how local factors influence small business success using data from the Yelp Open Dataset. By analyzing business attributes, restuarant hours, ratings, and location data, we aim to idenitfy key predictors of business performance and survival across different U.S. regions. 
 
 ## Team Members
 
@@ -13,41 +13,52 @@ A group project aiming to use U.S. County-level census data and machine learning
 
 ## Objectives
 
-- Analyze U.S. County-level census data to identify patterns and trends in the labor market.
-- Develop machine learning models to predict key labor market indicators such as unemployement rates and wages (average and median) by county and/or by industry.
+- Analyze Yelp business data to understand what factors contribute to successful small businesses.
+
+- Investigate how geography, customer sentiment, and business attributes relate to success.
+
+- Build predictive models to estimate business outcomes such as:
+    - Average rating
+    - Review volume
+    - Business longevity or closure likelihood
 
 ## Data Sources
 
-The project's dataset will be compiled from various public sources at the county-level in the U.S. and merged into a single dataset by county FIPS code (Federal Information Processing Standard code). The time frame for the data will be from 2010 to the most recent available year (2024).
-
-- [U.S. Census Bureau](https://data.census.gov/) - Demographic and economic data
-- [Bureau of Labor Statistics](https://www.bls.gov/) - Labor market data
-- [Federal Reserve Economic Data (FRED)](https://fred.stlouisfed.org/) - Economic data (supplemental)
-- Other relevant public datasets (e.g., education, health, infrastructure; if needed)
+The dataset includes millions of records across multiple tables such as:
+- business.json – Business metadata (location, category, attributes)
+- review.json – User reviews and star ratings
+- user.json – User information and engagement metrics
+- checkin.json – Customer check-in patterns
+- tip.json – User tips and recommendations
 
 ## Data Visualization
 
-- Use correlation heatmaps to show linear relationships between variables
-- Use time series plots to visualize trends
-- Use geographic heatmaps to show geographic disparities
-- Use bar charts to compare different demographic groups
-- Use scatter plots to show correlations between variables (e.g., education level vs. unemployment rate, GDP growth vs. job growth)
+To uncover insights into business performance, we will employ:
+
+- Exploratory Data Analysis (EDA):
+    - Distribution of ratings, reviews, and categories
+    - Temporal trends in business openings and closures
+    - Correlation between features such as location, hours, and ratings
+- Visualizations:
+    - Bar charts comparing top-performing categories and cities
+    - Geographic heatmaps showing business density and success rates
+    - Scatter plots exploring relationships (e.g., number of reviews vs. rating)
+    - Sentiment analysis word clouds from review text
 
 ## Machine Learning Techniques
 
-- Regression analysis (e.g., linear regression) with regularization (Ridge, Lasso) - to predict continuous outcomes like unemployment rates and wages
-- KMeans, DBSCAN - to identify clusters of counties with similar labor market characteristics
-- Time series forecasting (ARIMA, Prophet) - to predict future trends in unemployment rates and wages
-- Random Forest, Gradient Boosting Machines (GBM), XGBoost - to capture non-linear relationships and interactions between variables
+- Regression analysis (e.g., linear regression, ridge, lasso) to predict continuous outcomes like star ratings or review counts
+- KMeans, DBSCAN - group businesses by success profiles or regional pattern
+- Classification (logistic regression, random forest) to predict binary outcomes such as business survival (open vs. closed)
+- NLP Techniques (sentiment analysis, topic modeling) to extract insights from customer reviews 
 
 ## Test Plan
 
-We will likely use a combination of the following methods to evaluate our models:
-
-- Train-test split - randomly sample 10% of the data into a test set. This prevents biases from time-based splits (e.g., training on 2010-2020 and testing on 2021-2024 since the labor market was heavily affected by the COVID-19 pandemic).
-- Cross-validation
-- Evaluation metrics:
-
-    - For regression tasks: Mean Absolute Error (MAE), Mean Squared Error (MSE), R-squared
-    - For clustering tasks: Silhouette Score
+To ensure robust and fair model performance, we will apply:
+    - Train-Test Split (80/20) — for generalization testing
+    - Cross-Validation — for performance stability
+    - Evaluation Metrics:
+        - Regression: MAE, MSE, R²
+        - Classification: Accuracy, Precision, Recall, F1 Score, ROC-AUC
+        - Clustering: Silhouette Score
 
