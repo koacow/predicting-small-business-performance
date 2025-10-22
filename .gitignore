@@ -212,3 +212,5 @@ data/**/*.tsv
 data/**/*.parquet
 data/**/*.xlsx
 data/**/.DS_Store
+
+**/.DS_Store
