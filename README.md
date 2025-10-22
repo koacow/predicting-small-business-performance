@@ -24,12 +24,16 @@ This project explores how local factors influence small business success using d
 
 ## Data Sources
 
-The dataset includes millions of records across multiple tables such as:
+The dataset includes millions of records across multiple tables from the Yelp dataset (https://business.yelp.com/data/resources/open-dataset/) such as:
 - business.json – Business metadata (location, category, attributes)
 - review.json – User reviews and star ratings
 - user.json – User information and engagement metrics
 - checkin.json – Customer check-in patterns
 - tip.json – User tips and recommendations
+
+We will also use the following supplemental data sources:
+- Bureau of Labor Statistics (https://www.bls.gov/lau/tables.htm#cntyaa) - County-wide labor force and unemployment rate
+- BEA (https://apps.bea.gov/regional/downloadzip.htm) - County-wide GDP and/or personal income
 
 ## Data Visualization
 
