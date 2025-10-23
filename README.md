@@ -80,5 +80,7 @@ predicting-small-business-performance/
     │   └── bls/
     │       └── laucnty23.xlsx
     │   └── cb_2018_us_county_5m/
-    └── compile_dataset.ipynb
+    │       └── cb_2018_us_county_5m.shp
+    │── compile_dataset.ipynb
+    └── business_economic_data.csv
 ```
