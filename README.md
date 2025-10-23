@@ -66,4 +66,19 @@ To ensure robust and fair model performance, we will apply:
         - Classification: Accuracy, Precision, Recall, F1 Score, ROC-AUC
         - Clustering: Silhouette Score
 
+## Directory Structure
 
+```bash
+predicting-small-business-performance/
+    ├── data/
+    │   ├── Yelp JSON/
+    │   │   └── yelp_dataset/
+    │   │       └── yelp_academic_dataset_business.json
+    │   │       └── yelp_academic_dataset_review.json
+    │   ├── bea/
+    │   │   └── CAGDP1__ALL_AREAS_2001_2023.csv
+    │   └── bls/
+    │       └── laucnty23.xlsx
+    │   └── cb_2018_us_county_5m/
+    └── compile_dataset.ipynb
+```
