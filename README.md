@@ -4,6 +4,9 @@
 
 This project explores how local factors influence small business success using data from the Yelp Open Dataset. By analyzing business attributes, restaurant hours, ratings, and location data, we aim to identify key predictors of business performance and survival across different U.S. regions. 
 
+## Midterm Report
+https://youtu.be/T2V0ToZftDg
+
 ## Team Members
 
 - Khoa Cao (kcao@bu.edu)
