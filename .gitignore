@@ -215,3 +215,4 @@ data/**/.DS_Store
 data/**/*.tar
 data/**/*.json
 **/.DS_Store
+data/**/*.gzip
