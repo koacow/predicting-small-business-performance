@@ -108,7 +108,7 @@ The notebooks generate a variety of plots to explore the data and evaluate model
 - Correlation matrix showing relationships among covariates and targets
     - ![Correlation matrix](figures/CorrelationMatrix.png)
 - Scatter plots of unemployment rate vs GDP, colored by business status
-    - ![Scatter plot](figures/UnemploymentRate_GDP.png)
+    - ![Scatter plot](figures/UnemploymentRate_GDP_Scatter.png)
 - Confusion matrix for Decision Tree 
     - ![Decision Tree confusion matrix](figures/ConfusionMatrix_DT.png)
 - Confusion matrix for KNN
