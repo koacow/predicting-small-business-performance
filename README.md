@@ -46,7 +46,7 @@ We will also use the following supplemental data sources:
 git clone https://github.com/koacow/predicting-small-business-performance
 cd predicting-small-business-performance
 
-2 Install dependencies 
+2. Install dependencies 
 
 pip install -r requirements.txt
 
@@ -108,7 +108,7 @@ The notebooks generate a variety of plots to explore the data and evaluate model
 - Correlation matrix showing relationships among covariates and targets
     - ![Correlation matrix](figures/CorrelationMatrix.png)
 - Scatter plots of unemployment rate vs GDP, colored by business status
-    - ![Scatter plot](figures/UnemploymentRate_GDP_Scatter.png)
+    - ![Scatter plot](figures/UnemploymentRate_GDP.png)
 - Confusion matrix for Decision Tree 
     - ![Decision Tree confusion matrix](figures/ConfusionMatrix_DT.png)
 - Confusion matrix for KNN
