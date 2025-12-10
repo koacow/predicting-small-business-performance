@@ -74,7 +74,7 @@ predicting-small-business-performance/
 
 ## Testing and GitHub Workflow
 
-For this project, the main “tests” are embedded directly in the notebooks. Running all cells in code.ipynb and exploratory_data_analysis.ipynb will:
+Running all cells in code.ipynb and exploratory_data_analysis.ipynb will:
 
 In code.ipynb:
 - The dataset is compiled from Yelp, BLS, BEA, and Census sources into business_economic_data.csv.
