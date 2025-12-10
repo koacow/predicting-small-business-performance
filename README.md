@@ -114,34 +114,42 @@ The notebooks generate a variety of plots to explore the data and evaluate model
 - Confusion matrix for KNN
     - ![KNN confusion matrix](figures/ConfusionMatrix_KNN.png)
 
-## Data Processing and Modeling 
+
+## Data Processing and Modeling
 
 Data compilation:
-- Yelp Business Dataset (business + reviews + tips), filtered to restaurants (~12,000 businesses).
-- BLS LAUS (county-level labor force, employment, unemployment, unemployment rate).
-- BEA CAGDP1 (county-level GDP).
-- Census county shapefiles (geospatial joins using latitude/longitude → FIPS codes).
+- Yelp Business Dataset (business + reviews + tips), filtered to restaurants (~12,000 businesses). The dataset includes business metadata, hours, categories, attributes, review-level text, and tip-level text. After preprocessing and merging, the full integrated dataset used for modeling includes ~56,000 U.S. restaurants enriched with economic indicators.
+- BLS LAUS (county-level labor force, employment, unemployment, unemployment rate). These measures provide insight into the labor market conditions surrounding each business.
+- BEA CAGDP1 (county-level GDP). GDP by county captures broader economic activity and purchasing power within each region.
+- Census county shapefiles (geospatial joins using latitude/longitude → FIPS codes). Geospatial merging ensures that each business is matched to its correct county-level economic indicators.
+
+Data integration and cleaning:
+- Yelp businesses were assigned to counties via a GeoPandas spatial join using latitude/longitude and county shapefiles. Each business received a 5-digit FIPS code for economic merging.
+- BLS and BEA datasets were merged using left joins on FIPS, retaining all counties with labor market data. GDP was missing for ~1.5% of county–years; other labor metrics were complete.
+- The merged dataset was inspected for structural consistency and missingness. Businesses outside the U.S. or lacking valid spatial matches were excluded.
+- After standardizing variable names and removing unnecessary columns (business name, address, phone, etc.), the final analytical dataset contained ~56,000 U.S. businesses with complete county-level economic variables.
 
 Feature engineering:
-- Number of categories, number of attributes.
-- Weekly hours and average daily hours derived from Yelp attributes.
-- Review-based features: weighted average stars (by review length), weighted average review length, concatenated review text.
-- Tip-based features: number of tips, weighted average tip length.
+- Categories and Attributes: Parsed Yelp categories into counts of category labels and extracted attribute dictionaries into counts of business characteristics. These variables measure business complexity, offerings, and specialization.
+- Operational Hours: Derived total weekly hours, number of days open, and average hours per day from the hours field. These features reflect operational intensity and customer accessibility.
+- Review-based features: Computed average star rating, total review count, weighted average review length (weighted by useful votes), and concatenated review text. These features summarize customer engagement and sentiment tendencies.
+- Tip-based features: Computed total number of tips, weighted average tip length (weighted by compliments), total compliments, and average compliments per tip. These extend the sentiment and engagement signals beyond formal reviews.
+- Sentiment analysis: Applied VADER to average tip text to generate a sentiment score from –1 to +1, capturing customer tone.
+- Text processing: Concatenated all reviews and tips for each business and vectorized the text using TF-IDF with 5,000 features, including unigrams and bigrams. Terms with fewer than 5 occurrences or appearing in more than 80% of documents were filtered out. This provides a high-dimensional representation of customer language.
 
 Preprocessing:
-- Dropped irrelevant columns (business name, address, phone).
-- Removed businesses missing county FIPS codes (~5% of rows).
-- Normalized numerical features using min-max scaling.
-- Final dataset: ~10,500 businesses × 25 features.
+- Combined TF-IDF features with numeric attributes to form a modeling matrix with more than 5,000 columns.
+- Standardized all numeric features using z-score normalization to ensure comparability between economic variables, operational metrics, and text-derived counts.
+- Dropped rows with missing critical covariates to maintain data consistency.
 - Split into training/testing sets (80/20).
 
 Modeling:
-- Decision Tree Classifier (max depth = 10).
-- K-Nearest Neighbors (k=10, Euclidean distance).
-- Evaluation: accuracy (~77%), precision/recall/F1 via classification reports.
-- Confusion matrices show strong recall for open businesses but weak recall for closed businesses due to class imbalance (85% open vs 15% closed).
+- Baseline models: Decision Tree Classifier (max depth = 10) and K-Nearest Neighbors (k = 10, Euclidean distance) were trained on the numeric + engineered feature subset (~10,500 businesses × 25 features).
+- Advanced models: Bagging Classifier with Logistic Regression and XGBoost Classifier were trained on the full engineered dataset, including TF-IDF features (~56,000 businesses × 5,000+ features). These models were selected for their ability to handle high-dimensional sparse matrices and nonlinear patterns.
+- XGBoost demonstrated strong predictive performance and interpretability through feature importance rankings.
+- Evaluation included accuracy, precision/recall/F1, ROC-AUC (for XGBoost), and normalized confusion matrices.
 
-## Results
+Results
 
 Decision Tree:
 - Accuracy: ~77%
@@ -151,7 +159,7 @@ Decision Tree:
 - F1 (open): 0.86, F1 (closed): 0.19
 - Confusion matrix shows strong performance on open businesses but frequent misclassification of closed businesses.
 
-K‑Nearest Neighbors:
+K-Nearest Neighbors:
 - Accuracy: ~77%
 - Recall (open businesses): 0.95
 - Recall (closed businesses): 0.08
@@ -159,10 +167,30 @@ K‑Nearest Neighbors:
 - F1 (open): 0.86, F1 (closed): 0.13
 - Confusion matrix confirms bias toward predicting open businesses.
 
-Key insights:
-- Both models predict open businesses well but struggle with closed businesses due to class imbalance (85% open vs 15% closed).
-- Decision Tree feature importance suggests `stars`, `review_count`, and `unemployment_rate` are most predictive.
-Additional features (review sentiment, business age, income) are needed to improve negative class detection.
+Bagging Classifier (Logistic Regression base):
+- Accuracy: 76%
+- F1 Score: 0.76
+- Stable performance but limited ability to capture nonlinear relationships or subtle text signals.
+- XGBoost Classifier:
+- Accuracy: 78.5%
+- F1 Score: 0.79
+- ROC-AUC: 0.87, demonstrating strong separation between open and closed businesses.
+- Improved recall for the minority class (closed businesses) relative to baseline models.
 
+Feature importance analysis:
+- Top predictors included TF-IDF terms related to customer experience, business quality, and external shocks (e.g., terms referencing COVID-related disruptions).
+- Structured features such as number of attributes and number of categories contributed significantly, indicating that business variety and operational complexity relate to long-term survival.
+- Review count, tip sentiment, and service-related text patterns were highly informative, reflecting the role of customer engagement and satisfaction.
+- The presence of words like “closed” among top TF-IDF terms highlights a leakage issue and indicates the need for improved filtering in future work.
+
+Key insights:
+- All models predict open businesses well but show limited recall for closed businesses due to class imbalance (85% open vs 15% closed).
+- Economic indicators (labor force, unemployment rate, GDP) add meaningful context but must be normalized to avoid dominance by large-scale variables.
+- Review- and tip-level aggregations provide powerful predictive signals, demonstrating the value of combining unstructured text with structured data.
+- Addressing class imbalance—via resampling, class-weighted loss functions, or synthetic minority generation—represents a key avenue for improving closed-business detection.
+- Additional features such as review sentiment (full text), business age, or local income levels could enrich modeling performance.
+
+Conclusion
+Through comprehensive integration of Yelp business data with county-level economic indicators, combined with robust feature engineering and predictive modeling, this project demonstrates that small business outcomes are influenced jointly by customer sentiment, operational characteristics, and macroeconomic conditions. The fusion of structured numerical data with high-dimensional TF-IDF features enables both accurate prediction and rich interpretability. Future work should focus on mitigating class imbalance, incorporating full review sentiment analysis, and exploring temporal dynamics in business survival.
 
 
