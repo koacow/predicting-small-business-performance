@@ -4,7 +4,9 @@
 
 This project explores how local factors influence small business success using data from the Yelp Open Dataset. By analyzing business attributes, restaurant hours, ratings, and location data, we aim to identify key predictors of business performance and survival across different U.S. regions. 
 
-## Final Report
+# Final Report
+
+## Video Presentation: [Youtube Link](https://youtu.be/sPga0euMAuA)
 
 
 ## Team Members
@@ -27,6 +29,8 @@ This project explores how local factors influence small business success using d
 
 ## Data Sources
 
+Download the required data from the links provided below.
+
 The dataset includes millions of records across multiple tables from the Yelp dataset (https://business.yelp.com/data/resources/open-dataset/) such as:
 - business.json – Business metadata (location, category, attributes, average rating)
 - review.json – User reviews and star ratings
@@ -43,17 +47,24 @@ We will also use the following supplemental data sources:
 
 1. Clone the repository
 
+```bash
 git clone https://github.com/koacow/predicting-small-business-performance
 cd predicting-small-business-performance
+```
 
-2. Install dependencies 
+2. Build the provided Makefile to set up the environment and install dependencies
 
-pip install -r requirements.txt
+```bash
+make setup
+```
 
-Open code.ipynb in Jupyter Notebook or JupyterLab and run all cells to compile the dataset  (business_economic_data.csv)
-Then open exploratory_data_analysis.ipynb and run all cells to perform exploratory analysis, train models, and generate visualizations.
+3. Download the required datasets from the links provided in the Data Sources section and place them in the appropriate directories as shown in the Directory Structure section below.
+
+4. Open `code.ipynb` in Jupyter Notebook or JupyterLab and run all cells to compile the dataset and perform analysis.
 
 ## Directory Structure
+
+Place the downloaded datasets in the following directory structure:
 
 ```bash
 predicting-small-business-performance/
@@ -123,13 +134,14 @@ Data compilation:
 - BEA CAGDP1 (county-level GDP). GDP by county captures broader economic activity and purchasing power within each region.
 - Census county shapefiles (geospatial joins using latitude/longitude → FIPS codes). Geospatial merging ensures that each business is matched to its correct county-level economic indicators.
 
-Data integration and cleaning:
+### Data integration and cleaning:
 - Yelp businesses were assigned to counties via a GeoPandas spatial join using latitude/longitude and county shapefiles. Each business received a 5-digit FIPS code for economic merging.
 - BLS and BEA datasets were merged using left joins on FIPS, retaining all counties with labor market data. GDP was missing for ~1.5% of county–years; other labor metrics were complete.
 - The merged dataset was inspected for structural consistency and missingness. Businesses outside the U.S. or lacking valid spatial matches were excluded.
 - After standardizing variable names and removing unnecessary columns (business name, address, phone, etc.), the final analytical dataset contained ~56,000 U.S. businesses with complete county-level economic variables.
 
-Feature engineering:
+### Feature engineering:
+
 - Categories and Attributes: Parsed Yelp categories into counts of category labels and extracted attribute dictionaries into counts of business characteristics. These variables measure business complexity, offerings, and specialization.
 - Operational Hours: Derived total weekly hours, number of days open, and average hours per day from the hours field. These features reflect operational intensity and customer accessibility.
 - Review-based features: Computed average star rating, total review count, weighted average review length (weighted by useful votes), and concatenated review text. These features summarize customer engagement and sentiment tendencies.
@@ -137,21 +149,24 @@ Feature engineering:
 - Sentiment analysis: Applied VADER to average tip text to generate a sentiment score from –1 to +1, capturing customer tone.
 - Text processing: Concatenated all reviews and tips for each business and vectorized the text using TF-IDF with 5,000 features, including unigrams and bigrams. Terms with fewer than 5 occurrences or appearing in more than 80% of documents were filtered out. This provides a high-dimensional representation of customer language.
 
-Preprocessing:
+### Preprocessing:
+
 - Combined TF-IDF features with numeric attributes to form a modeling matrix with more than 5,000 columns.
 - Standardized all numeric features using z-score normalization to ensure comparability between economic variables, operational metrics, and text-derived counts.
 - Dropped rows with missing critical covariates to maintain data consistency.
 - Split into training/testing sets (80/20).
 
-Modeling:
+### Modeling
+
 - Baseline models: Decision Tree Classifier (max depth = 10) and K-Nearest Neighbors (k = 10, Euclidean distance) were trained on the numeric + engineered feature subset (~10,500 businesses × 25 features).
 - Advanced models: Bagging Classifier with Logistic Regression and XGBoost Classifier were trained on the full engineered dataset, including TF-IDF features (~56,000 businesses × 5,000+ features). These models were selected for their ability to handle high-dimensional sparse matrices and nonlinear patterns.
 - XGBoost demonstrated strong predictive performance and interpretability through feature importance rankings.
 - Evaluation included accuracy, precision/recall/F1, ROC-AUC (for XGBoost), and normalized confusion matrices.
 
-Results
+### Results
 
 Decision Tree:
+
 - Accuracy: ~77%
 - Recall (open businesses): 0.93
 - Recall (closed businesses): 0.13
@@ -160,6 +175,7 @@ Decision Tree:
 - Confusion matrix shows strong performance on open businesses but frequent misclassification of closed businesses.
 
 K-Nearest Neighbors:
+
 - Accuracy: ~77%
 - Recall (open businesses): 0.95
 - Recall (closed businesses): 0.08
@@ -168,6 +184,7 @@ K-Nearest Neighbors:
 - Confusion matrix confirms bias toward predicting open businesses.
 
 Bagging Classifier (Logistic Regression base):
+
 - Accuracy: 76%
 - F1 Score: 0.76
 - Stable performance but limited ability to capture nonlinear relationships or subtle text signals.
@@ -177,20 +194,23 @@ Bagging Classifier (Logistic Regression base):
 - ROC-AUC: 0.87, demonstrating strong separation between open and closed businesses.
 - Improved recall for the minority class (closed businesses) relative to baseline models.
 
-Feature importance analysis:
+### Feature importance analysis:
+
 - Top predictors included TF-IDF terms related to customer experience, business quality, and external shocks (e.g., terms referencing COVID-related disruptions).
 - Structured features such as number of attributes and number of categories contributed significantly, indicating that business variety and operational complexity relate to long-term survival.
 - Review count, tip sentiment, and service-related text patterns were highly informative, reflecting the role of customer engagement and satisfaction.
 - The presence of words like “closed” among top TF-IDF terms highlights a leakage issue and indicates the need for improved filtering in future work.
 
-Key insights:
+### Key insights:
+
 - All models predict open businesses well but show limited recall for closed businesses due to class imbalance (85% open vs 15% closed).
 - Economic indicators (labor force, unemployment rate, GDP) add meaningful context but must be normalized to avoid dominance by large-scale variables.
 - Review- and tip-level aggregations provide powerful predictive signals, demonstrating the value of combining unstructured text with structured data.
 - Addressing class imbalance—via resampling, class-weighted loss functions, or synthetic minority generation—represents a key avenue for improving closed-business detection.
 - Additional features such as review sentiment (full text), business age, or local income levels could enrich modeling performance.
 
-Conclusion
+### Conclusion
+
 Through comprehensive integration of Yelp business data with county-level economic indicators, combined with robust feature engineering and predictive modeling, this project demonstrates that small business outcomes are influenced jointly by customer sentiment, operational characteristics, and macroeconomic conditions. The fusion of structured numerical data with high-dimensional TF-IDF features enables both accurate prediction and rich interpretability. Future work should focus on mitigating class imbalance, incorporating full review sentiment analysis, and exploring temporal dynamics in business survival.
 
 
